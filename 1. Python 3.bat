@@ -1,2 +1,2 @@
-python "rotina.py"
+python -B "teamplate\main.py"
 pause
