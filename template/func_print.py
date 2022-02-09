@@ -2,6 +2,7 @@ from import_libs import install_if_nonexistent
 install_if_nonexistent('colorama')
 from colorama import Fore, Style
 
+
 def division(n):
     print(Style.BRIGHT + Fore.GREEN + '# ' + n * '=' + ' #' + Style.RESET_ALL + Fore.RESET)
 
@@ -22,5 +23,3 @@ def final_message(msg, signature, n):
         line = line.format(i)
         print(green_bar + line + green_bar)
     division(n)
-
-
