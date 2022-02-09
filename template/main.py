@@ -39,7 +39,6 @@ from import_libs import install_if_nonexistent
 install_if_nonexistent('pandas')
 install_if_nonexistent('xlrd')
 install_if_nonexistent('openpyxl')
-
 import pandas as pd
 import numpy as np
 
@@ -50,7 +49,7 @@ n = 84
 
 def read_files():
     ## 2.1 Client & Project
-    section(n, '1. Client & Project')
+    section(n, '1. CLIENT & PROJECT INFORMATION:')
     warnings.simplefilter("ignore")
     cp_data = pd.read_excel(r'input\1_client_project.xlsx').iloc[0:, 1:]
     warnings.simplefilter("default")
@@ -59,14 +58,14 @@ def read_files():
             print(cp_data.iloc[i, 0] + ':', ' ' * (24 - len(cp_data.iloc[i, 0])), cp_data.iloc[i, 1])
 
     ## 2.2 Sampling data
-    section(n, '2. SAMPLING DATA')
+    section(n, '2. SAMPLING DATA:')
     warnings.simplefilter("ignore")
     sp_data = pd.read_excel(r'input\2_sampling_data.xlsx', index_col=None, skiprows=[0, 1])
     warnings.simplefilter("default")
     print(sp_data)
 
     ## 2.3 Sampling plan form
-    section(n, '3. SAMPLING PLAN FORM')
+    section(n, '3. SAMPLING PLAN:')
     i, path = [0, r'input\\']
     files = os.listdir(path)
     while 'FT-14' not in files[i]:
@@ -163,9 +162,10 @@ def process(cp_data, sp_data, sample_vol):
                     line = line.replace('var0', sp_data.iloc[i, 0])
                     fileW.write(line)
             # 2. Adjust doc varx and get vol
+            sample_vol['sampled_vol'].append(sp_data.iloc[i, k + 27])
             with codecs.open(doc_filename, mode='w', encoding='utf-8') as fileW:
-                for j in range(sp_data.shape[1]):
-                    for line in doc_xml:
+                for line in doc_xml:
+                    for j in range(sp_data.shape[1]):
                         val = sp_data.iloc[i, j]
                         if j == k + 1:
                             line = line.replace('>Vagner Lopes Leivas', '>' + str(val))
@@ -186,15 +186,14 @@ def process(cp_data, sp_data, sample_vol):
                         elif j == k + 13:
                             line = line.replace('>Bailer | Sauber System', '>' + str(val))
                         else:
-                            line = line.replace('var' + str(i), str(val))
-                        fileW.write(line)
-                    if j == k + 27:
-                        sample_vol['sampled_vol'].append(val)
+                            line = line.replace('>var' + str(j) + '<', '>' + str(val) + '<')
+                fileW.write(line)
             # 3. Zip filled sampling form, save to 'output\', rename extension to .docx
-            FILE = 'output/FT-23_rev 10 - Relatório de Amostragem ' + sp_data.iloc[i, 0].replace('/', '_')
-            FILEdocx = FILE[:7] + FILE[22:] + '.docx'
-            shutil.make_archive(FILE, 'zip', 'tmp')
-            os.rename(FILE + '.zip', FILEdocx)
+            file = r'output\FT-23_' + sp_data.iloc[i, 0]
+            file = file.replace(r'/2', '_2')
+            file_docx = file + '.docx'
+            shutil.make_archive(file, 'zip', 'tmp')
+            os.rename(file + '.zip', file_docx)
         return sample_vol
 
     def report_differences(sp_data, sample_vol):
@@ -217,7 +216,7 @@ def process(cp_data, sp_data, sample_vol):
 
 
 def finish(sp_data):
-    division(84)
+    #division(84)
     msg = 'Pronto! ' + str(len(sp_data)) + ' FT-23s preenchidas na pasta Relatórios!\n' \
                                                'Peça a algum colega que revise as FT-23s com FT-03, FT-14 e FT-25 em mãos!'
 
@@ -227,7 +226,7 @@ def finish(sp_data):
                 'JSF\n' \
                 '12/03/2021\n'
     final_message(msg, signature, n)
-    division(84)
+    #division(84)
 
 
 def main():
