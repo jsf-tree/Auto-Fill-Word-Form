@@ -1,46 +1,49 @@
-INPUT:
-1. AMOSTRAGENS.xlsx  [preenchido a partir do FT-03]
-2. CLIENTE_e_PROJETO.txt [vem do comercial]
-FT-14.xls
+## Auto-Soil-Profile-Drawer
+#### Wondering how is it at work?
+> Check on my YouTube -> https://youtu.be/pXsSaKJ_2TY
+#### Why?
+> Filling word forms was too time-consuming in the company. 
+#### How was the problem solved?
+> By setting a word doc template with tag-words, and developing a script to replace them from the data of two .xlsx, which are faster to fill.
+#### What did I learn?
+> I learned how to optimize filling word docs.
+---
+#### FIRST TIME USING IT?
+Make sure you have a python.exe set as an environmental variable in PATH
+```
+Control panel > System > Advanced system settings > Environment Variables
+Under "User variables", select "Path" > Edit > New > 
+Type the path to your python.exe
+Move this path to the top of the list
+```
+---
+#### INSTRUCTIONS:
+1. Fill the .xlsx in "input\" with data, add a sampling plan form
+2. Run "run.bat"
+3. Volumes will be checked and a words doc will be filled by sample.
+4. Files will appear in "output\"
+- When filling both xlsx, mind the formatting: point as decimal sepator
 
-OUTPUT:
->> Aqui sairão os relatórios preenchidos no formato do TEMPLATE
 
-PADRAO:
-FT-23_rev 10 TEMPLATE.docx
-
-
-
-
-1. Reservar espaço na FT-25 (Preencher as linhas para as amostragens a serem registradas)
-
-2. Digitar as informações das FT-03 num excel, e colocar a FT-14 na mesma pasta.
-
-3. Dar dois cliques em um arquivo .bat
-
-----------------------------------------------------------------------------------------------------------------------
-
-Ajustes:
-Na hora de emitir a discrepância, ir até 
-"INSTRUÇÕES DE PREENCHIMENTO DA CADEIA DE CUSTÓDIA" porque o lab pode ser outro "GÖRTLER" 
-
-Na hora de emitir a discrepância, dependendo do Lab, pode haver outras combinação de parâmetros:
-
-SVOC/TPH/PCB - 3*500ml
-
-Na hora de emitir a discrepância, considerar os pepinos, pensar em algo robusto porque existem revisões e revisões
-
-Comparar se os resultados dos parâmetros do FT-03 estão na "LQ e faixa de trabalho" certificados. Adcionar (há como?) aba no excel "1. AMOSTRAGENS.xlsx" com os "LQ e faixa de trabalho". Se estiver fora do LQ, emitir como > ou <. Botar formatação condicional avisando que isso aconteceu.
-
-talvez remover lista do template, mas manter no excel
-
-Se método de amostragem for "Baixa vazão - ABNT NBR 15.847:2010", "Vazão na coleta" nao pode ser maior que a "Vazão de purga"
-
-No "2. CLIENTE_e_PROJETO.txt" (Pode virar uma aba de "1. AMOSTRAGENS"?) adicionar campo de escolha de assinaturas. A partir desse campo, substituir o .jpg em /media (com mesma razão de pixeis)
-
-Criar e deletar o tmp em algum local não visualizável, talvez no "OUTPUT"
-
-Correção automática se preenchido o nível do óleo (Falar Judite).
-Se baixa vazão, "Nível inicial da amostragem" = "Nível final da purga"
-Se purga mínima, "Nível inicial da amostragem" >= "Nível final da purga"
-
+---
+#### EXPLANATION TO FILES AND FOLDERS:
+##### Files:
+- **input\1_client_project.xlsx**\
+_Generic information (client and project)_
+- **input\2_sampling_data.xlsx**\
+_Measurements taken in the field during sampling_
+- **input\FT-14.xls**\
+_Measurements taken in the field during sampling_
+- **template\FT-23 TEMPLATE.docx**\
+_The basic template for the forms to be filled_
+- **1_run.bat**\
+_Used to run python_
+- **LICENSE**\
+_License in GitHub_
+- **README.md**\
+_This readme_
+##### Folders
+- **output\\**\
+_directory where filled forms and reports are saved to_
+- **template\\**\
+_directory where .py and teamplate are stored_

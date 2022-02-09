@@ -101,7 +101,7 @@ def process(n, cp_data, sp_data, sample_vol):
         shutil.rmtree('output') if 'output' in os.listdir() else os.mkdir('output')  # delete erase files in output
 
     def unzip():
-        with ZipFile('template\FT-23_rev 10 TEMPLATE.docx', 'r') as zip_ref:
+        with ZipFile('template\FT-23 TEMPLATE.docx', 'r') as zip_ref:
             zip_ref.extractall('tmp')
 
     def open_word_xmls(cp_data, header_filename, doc_filename):
@@ -185,9 +185,9 @@ def process(n, cp_data, sp_data, sample_vol):
 
 
 def finish(n, sp_data):
-    msg = 'Pronto! ' + str(len(sp_data)) + ' FT-23s preenchidas na pasta Relatórios!\n' \
-                                               'Peça a algum colega que revise as FT-23s com FT-03, FT-14 e FT-25 em mãos!'
-    signature = 'Auto-preencher FT-23 v.0\n' \
+    msg = 'Done! ' + str(len(sp_data)) + ' FT-23s were filled and saved to output\!\n' \
+                                               'You can double-check now with the other forms: FT-03, 14, 23 and 25!'
+    signature = 'Auto-Fill-Word-Form FT-23 v.0\n' \
                 'Company 2021\n' \
                 '----------------\n' \
                 'JSF\n' \
