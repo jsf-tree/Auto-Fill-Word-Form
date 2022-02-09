@@ -20,10 +20,6 @@ SUMMARY:
         4.4.2. ZIPPAR, SALVAR, RENOMEAR PARA ".docx"
      4.5 LIMPAR DIRETÓRIO
   5. MENSAGEM FINAL
-
-# =================================================================================== #
-# OBSERVAÇÕES:
-# Expandir o relatório de discrepâncias.
 """
 # =================================================================================== #
 # 1. IMPORT LIBRARIES
