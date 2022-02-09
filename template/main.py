@@ -6,7 +6,6 @@ OBJECTIVE: Optimize filling sampling forms
 
 SUMMARY:
   1. IMPORTAR BIBLIOTECAS
-  2. FUNÇÕES
   3. LER AS INFOS
      3.1 AMOSTRAGEM.xlsx
      3.2 CLIENTE_e_PROJETO.txt
