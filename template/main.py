@@ -1,28 +1,3 @@
-"""
-OBJECTIVE: Optimize filling sampling forms
-  Author: JSF
-  E-Mail: juliano.finck@gmail.com
-  Date: 11.03.2021
-
-SUMMARY:
-  1. IMPORTAR BIBLIOTECAS
-  3. LER AS INFOS
-     3.1 AMOSTRAGEM.xlsx
-     3.2 CLIENTE_e_PROJETO.txt
-     3.3 LER FT14
-  4. PROCESSAMENTO
-     4.1 PREPARANDO DIRETÓRIO
-     4.2 DESCOMPACTANDO (UNZIPPING) O TEMPLATE DO 'FT-23' PARA PASTA tmp
-     4.3 ABRIR E ADICIONAR AS INFORMAÇÕES DE CLIENTE e PROJETO
-     4.4 ADICIONAR INFORMAÇÕES DE CADA AMOSTRAGEM EM LOOP
-        4.4.1 SUBSTITUIR
-        4.4.2. ZIPPAR, SALVAR, RENOMEAR PARA ".docx"
-     4.5 LIMPAR DIRETÓRIO
-  5. MENSAGEM FINAL
-"""
-# =================================================================================== #
-# 1. IMPORT LIBRARIES
-
 import os
 import shutil
 import codecs
@@ -39,11 +14,10 @@ import numpy as np
 
 
 os.system("cls")
-n = 84
 
 
-def read_files():
-    ## 2.1 Client & Project
+def read_files(n):
+    # Client & Project
     section(n, '1. CLIENT & PROJECT INFORMATION:')
     warnings.simplefilter("ignore")
     cp_data = pd.read_excel(r'input\1_client_project.xlsx').iloc[0:, 1:]
@@ -52,14 +26,14 @@ def read_files():
         if i not in [0, 6, 7]:
             print(cp_data.iloc[i, 0] + ':', ' ' * (24 - len(cp_data.iloc[i, 0])), cp_data.iloc[i, 1])
 
-    ## 2.2 Sampling data
+    # Sampling data
     section(n, '2. SAMPLING DATA:')
     warnings.simplefilter("ignore")
     sp_data = pd.read_excel(r'input\2_sampling_data.xlsx', index_col=None, skiprows=[0, 1])
     warnings.simplefilter("default")
     print(sp_data)
 
-    ## 2.3 Sampling plan form
+    # Sampling plan form
     section(n, '3. SAMPLING PLAN:')
     i, path = [0, r'input\\']
     files = os.listdir(path)
@@ -121,7 +95,7 @@ def expected_volume(ft14):
     return sample_vol
 
 
-def process(cp_data, sp_data, sample_vol):
+def process(n, cp_data, sp_data, sample_vol):
     def prepare_dir():
         shutil.rmtree('tmp') if 'tmp' in os.listdir() else os.mkdir('tmp')  # word template dissection here
         shutil.rmtree('output') if 'output' in os.listdir() else os.mkdir('output')  # delete erase files in output
@@ -147,7 +121,6 @@ def process(cp_data, sp_data, sample_vol):
         return header_xml, doc_xml
 
     def fill_with_sample_data(sp_data, sample_vol, header_xml, doc_xml, header_filename, doc_filename):
-        section(84, '4. FILLING TECHNICAL FORMS nº23...')
         k = 0
         for i in range(sp_data.shape[0]):
             print(''+str(i+1)+':', sp_data.iloc[i, 0])
@@ -163,23 +136,23 @@ def process(cp_data, sp_data, sample_vol):
                     for j in range(sp_data.shape[1]):
                         val = sp_data.iloc[i, j]
                         if j == k + 1:
-                            line = line.replace('>Vagner Lopes Leivas', '>' + str(val))
+                            line = line.replace('>Sampler1', '>' + str(val))
                         elif j == k + 6:
-                            line = line.replace('>Instável', '>' + str(val))
+                            line = line.replace('>Sunny', '>' + str(val))
                         elif j == k + 8:
-                            line = line.replace('>Sem observações', '>' + str(val))
+                            line = line.replace('>No observations', '>' + str(val))
                         elif j == k + 7:
-                            line = line.replace('>Sem características relevantes', '>' + str(val))
+                            line = line.replace('>LNAPL', '>' + str(val))
                         elif j == k + 9:
-                            line = line.replace('>Baixa vazão - ABNT NBR 15.847:2010', '>' + str(val))
+                            line = line.replace('>SamplingMethod1', '>' + str(val))
                         elif j == k + 10:
-                            line = line.replace('>Multiparâmetro: Mu_05 | YSI | Professional Plus', '>' + str(val))
+                            line = line.replace('>Equipment1', '>' + str(val))
                         elif j == k + 11:
-                            line = line.replace('>Medidor de interface: I-16 | Solinst | 122', '>' + str(val))
+                            line = line.replace('>Equipment2', '>' + str(val))
                         elif j == k + 12:
-                            line = line.replace('>Termômetro: T-02 | Simpla | DT160', '>' + str(val))
+                            line = line.replace('>Equipment3', '>' + str(val))
                         elif j == k + 13:
-                            line = line.replace('>Bailer | Sauber System', '>' + str(val))
+                            line = line.replace('>Equipment4', '>' + str(val))
                         else:
                             line = line.replace('>var' + str(j) + '<', '>' + str(val) + '<')
                 fileW.write(line)
@@ -205,30 +178,30 @@ def process(cp_data, sp_data, sample_vol):
     header_filename = 'tmp\word\header1.xml'
     doc_filename = 'tmp\word\document.xml'
     header_xml, doc_xml = open_word_xmls(cp_data, header_filename, doc_filename)
+    section(n, '4. FILLING TECHNICAL FORMS nº23...')
     fill_with_sample_data(sp_data, sample_vol, header_xml, doc_xml, header_filename, doc_filename)
     report_differences(sp_data, sample_vol)
     shutil.rmtree('tmp')  # Delete dir: 'tmp\'
 
 
-def finish(sp_data):
-    #division(84)
+def finish(n, sp_data):
     msg = 'Pronto! ' + str(len(sp_data)) + ' FT-23s preenchidas na pasta Relatórios!\n' \
                                                'Peça a algum colega que revise as FT-23s com FT-03, FT-14 e FT-25 em mãos!'
-
     signature = 'Auto-preencher FT-23 v.0\n' \
                 'Company 2021\n' \
                 '----------------\n' \
                 'JSF\n' \
                 '12/03/2021\n'
     final_message(msg, signature, n)
-    #division(84)
+
 
 
 def main():
-    sp_data, cp_data, ft14 = read_files()
+    n = 84
+    sp_data, cp_data, ft14 = read_files(n)
     sample_vol = expected_volume(ft14)
-    process(cp_data, sp_data, sample_vol)
-    finish(sp_data)
+    process(n, cp_data, sp_data, sample_vol)
+    finish(n, sp_data)
 
 
 main()
