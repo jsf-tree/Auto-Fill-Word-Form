@@ -1,2 +1,2 @@
-python -B "teamplate\main.py"
+python -B "template\main.py"
 pause
